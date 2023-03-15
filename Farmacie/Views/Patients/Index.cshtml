@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Lista de pacienti";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+@foreach (Farmacie.Models.Patient patient in ViewBag.Patients)
+            {
+                <div>
+                    @Html.Partial("PatientInfo", patient)
+                </div>
+                <hr />
+                <br />
+            }

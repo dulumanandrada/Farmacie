@@ -1,0 +1,41 @@
+﻿@model Farmacie.Models.Patient
+
+<h2>Editare pacient</h2>
+<br />
+
+<div>
+    @using (Html.BeginForm(actionName: "Edit",
+        controllerName: "Patients",
+        method: FormMethod.Post,
+        routeValues: new { id = Model.Id }))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("FirstName", "Nume pacient")
+        @Html.EditorFor(p => p.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(p => p.FirstName, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("LastName", "Prenume pacient")
+        @Html.EditorFor(p => p.LastName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(p => p.LastName, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("CNP", "CNP pacient")
+        @Html.EditorFor(p => p.CNP, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(p => p.CNP, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Phone", "Telefon pacient")
+        @Html.EditorFor(p => p.Phone, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(p => p.Phone, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Address", "Adresa pacient")
+        @Html.EditorFor(p => p.Address, new { htmlAttributes = new { @class = "form-control" } })
+        <br />
+
+        <button class="btn btn-success" type="submit">Modifica</button>
+    }
+</div>

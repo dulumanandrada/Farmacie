@@ -1,0 +1,11 @@
+﻿@model Farmacie.Models.Medicament
+
+<a class="btn btn-success" href="/Medicaments/Index">Inapoi</a>
+
+<div>
+    @Html.Partial("MedicamentInfo", Model)
+
+    <form method="post" action="/Medicaments/Delete/@Model.Id">
+        <button class="btn btn-danger" type="submit">Sterge</button>
+    </form>
+</div>

@@ -1,0 +1,47 @@
+﻿@model Farmacie.Models.Medicament
+
+<h2>Editare medicament</h2>
+<br />
+
+<div>
+    @using (Html.BeginForm(actionName: "Edit",
+      controllerName: "Medicaments",
+      method: FormMethod.Post,
+      routeValues: new { id = Model.Id }))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Name", "Nume medicament")
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Weight", "Gramaj medicament")
+        @Html.EditorFor(m => m.Weight, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Weight, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Form", "Forma medicament")
+        @Html.EditorFor(m => m.Form, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Form, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Lot", "Lot medicament")
+        @Html.EditorFor(m => m.Lot, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Lot, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("ExpDate", "Data expirare medicament")
+        @Html.EditorFor(m => m.ExpDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.ExpDate, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Quantity", "Cantitate medicament")
+        @Html.EditorFor(m => m.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Quantity, null, new { @class = "text-danger" })
+        <br />
+
+        <button class="btn btn-success" type="submit">Modifica</button>
+    }
+</div>

@@ -1,0 +1,64 @@
+﻿@model Farmacie.Models.Medicament
+
+<h2>Adaugare medicament</h2>
+<br />
+
+<div>
+    @using (Html.BeginForm(actionName: "New",
+controllerName: "Medicaments",
+method: FormMethod.Post,
+routeValues: new { id = Model.Id }))
+    {
+        @using (Html.BeginForm(actionName: "New", controllerName: "Medicaments"))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("Name", "Nume medicament")
+
+            <br />
+
+            @Html.TextBox("Name", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("Weight", "Gramaj medicament")
+            <br />
+
+            @Html.TextBox("Weight", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Weight, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("Form", "Forma medicament")
+            <br />
+
+            @Html.TextBox("Form", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Form, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("Lot", "Lot medicament")
+            <br />
+
+            @Html.TextBox("Lot", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Lot, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("ExpDate", "Data expirare medicament")
+            <br />
+
+            @Html.TextBox("ExpDate", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ExpDate, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("Quantity", "Cantitate medicament")
+            <br />
+
+            @Html.TextBox("Quantity", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Quantity, null, new { @class = "text-danger" })
+            <br />
+
+            <button class="btn btn-success" type="submit">Adauga</button>
+        }
+    }
+
+</div>
