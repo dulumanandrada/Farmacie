@@ -22,10 +22,13 @@ namespace Farmacie.Models
         public string Lot { get; set; }
 
         //data expirare
+        [DisplayFormat(DataFormatString = "dd-mm-yyyy", ApplyFormatInEditMode = true)]
         public DateTime ExpDate { get; set; }
 
         //nr bucati stoc
         public int Quantity { get; set; }
+
+        //public virtual ICollection<CommandMedicament>? CommandMedicaments { get; set; }
     }
 }
 

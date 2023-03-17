@@ -11,7 +11,7 @@
     "Farmacie": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7055;http://localhost:5031",
+      "applicationUrl": "http://localhost:16737",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
