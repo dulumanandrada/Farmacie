@@ -3,6 +3,7 @@ using System;
 using Farmacie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farmacie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230317223206_ModifyCommandMigration")]
+    partial class ModifyCommandMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -110,6 +112,30 @@ namespace Farmacie.Data.Migrations
                     b.ToTable("Commands");
                 });
 
+            modelBuilder.Entity("Farmacie.Models.CommandMedicament", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CommandId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MedicamentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("WantedQuantity")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id", "CommandId", "MedicamentId");
+
+                    b.HasIndex("CommandId");
+
+                    b.HasIndex("MedicamentId");
+
+                    b.ToTable("CommandMedicaments");
+                });
+
             modelBuilder.Entity("Farmacie.Models.Medicament", b =>
                 {
                     b.Property<int>("Id")
@@ -143,8 +169,9 @@ namespace Farmacie.Data.Migrations
 
             modelBuilder.Entity("Farmacie.Models.Patient", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
@@ -311,6 +338,25 @@ namespace Farmacie.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Farmacie.Models.CommandMedicament", b =>
+                {
+                    b.HasOne("Farmacie.Models.Command", "Command")
+                        .WithMany("CommandMedicaments")
+                        .HasForeignKey("CommandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Farmacie.Models.Medicament", "Medicament")
+                        .WithMany("CommandMedicaments")
+                        .HasForeignKey("MedicamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Command");
+
+                    b.Navigation("Medicament");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -365,6 +411,16 @@ namespace Farmacie.Data.Migrations
             modelBuilder.Entity("Farmacie.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Commands");
+                });
+
+            modelBuilder.Entity("Farmacie.Models.Command", b =>
+                {
+                    b.Navigation("CommandMedicaments");
+                });
+
+            modelBuilder.Entity("Farmacie.Models.Medicament", b =>
+                {
+                    b.Navigation("CommandMedicaments");
                 });
 #pragma warning restore 612, 618
         }

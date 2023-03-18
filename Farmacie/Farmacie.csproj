@@ -11,6 +11,7 @@
     <None Remove="Views\Medicaments\" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="Views\Commands\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
@@ -28,5 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Medicaments\" />
+    <Folder Include="Views\Commands\" />
   </ItemGroup>
 </Project>

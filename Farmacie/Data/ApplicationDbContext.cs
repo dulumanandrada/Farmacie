@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Patient> Patients { set; get; }
-    public DbSet<Medicament> Medicaments { set; get; }  
+    public DbSet<Medicament> Medicaments { set; get; }
+    public DbSet<Command> Commands { get; set; }
 }
 

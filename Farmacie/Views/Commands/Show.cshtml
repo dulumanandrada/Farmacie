@@ -1,0 +1,11 @@
+﻿@model Farmacie.Models.Command
+
+<a class="btn btn-success" href="/Commands/Index">Inapoi</a>
+
+<div>
+    @Html.Partial("CommandInfo", Model)
+
+    <form method="post" action="/Commands/Delete/@Model.Id">
+        <button class="btn btn-danger" type="submit">Sterge</button>
+    </form>
+</div>

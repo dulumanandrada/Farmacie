@@ -1,0 +1,27 @@
+﻿@model Farmacie.Models.Command
+
+<h2>Editare comanda</h2>
+<br />
+
+<div>
+    @using (Html.BeginForm(actionName: "Edit",
+    controllerName: "Commands",
+    method: FormMethod.Post,
+    routeValues: new { id = Model.Id }))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("PatientName", "Nume pacient")
+        @Html.EditorFor(c => c.PatientName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.PatientName, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("Diagnostic", "Diagnostic")
+        @Html.EditorFor(c => c.Diagnostic, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.Diagnostic, null, new { @class = "text-danger" })
+        <br />
+
+        <button class="btn btn-success" type="submit">Modifica</button>
+    }
+</div>

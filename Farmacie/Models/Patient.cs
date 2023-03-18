@@ -7,7 +7,7 @@ namespace Farmacie.Models
     {
         //id = primary key
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         //nume
         [Required(ErrorMessage = "Numele este obligatoriu!")]

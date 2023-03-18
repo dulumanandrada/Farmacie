@@ -1,0 +1,40 @@
+﻿@model Farmacie.Models.Command
+
+<h2>Adaugare comanda</h2>
+<br />
+
+<div>
+    @using (Html.BeginForm(actionName: "New",
+controllerName: "Commands",
+method: FormMethod.Post,
+routeValues: new { id = Model.Id }))
+    {
+        @using (Html.BeginForm(actionName: "New", controllerName: "Commands"))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("PatientName", "Nume pacient")
+
+            <br />
+
+            @Html.TextBox("PatientName", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.PatientName, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("Diagnostic", "Diagnostic")
+
+            <br />
+
+            @Html.TextArea("Diagnostic", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Diagnostic, null, new { @class = "text-danger" })
+            <br />
+
+            <label>Selectati medicamente</label>
+
+            
+            <button class="btn btn-success" type="submit">Adauga</button>
+        }
+    }
+
+</div>

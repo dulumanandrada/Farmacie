@@ -7,13 +7,14 @@ namespace Farmacie.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //public virtual ICollection<Commands> Commands { get; set; }
+        public virtual ICollection<Command>? Commands { get; set; }
 
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem>? AllRoles { get; set; }
+
     }
 }
 

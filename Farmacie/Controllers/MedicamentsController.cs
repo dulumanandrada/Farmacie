@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Farmacie.Data;
 using Farmacie.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -37,12 +39,14 @@ namespace Farmacie.Controllers
         }
 
         //adaugare medicament in baza de date
+        [Authorize(Roles = "Admin,Farmacist")]
         public IActionResult New()
         {
             Medicament medicament = new Medicament();
             return View(medicament);
         }
 
+        [Authorize(Roles = "Admin,Farmacist")]
         [HttpPost]
         public IActionResult New(Medicament medicament)
         {
@@ -60,6 +64,7 @@ namespace Farmacie.Controllers
         }
 
         //se editeaza datele unui medicament
+        [Authorize(Roles = "Admin,Farmacist")]
         public IActionResult Edit(int id)
         {
             Medicament medicament = db.Medicaments.Where(m => m.Id == id)
@@ -67,6 +72,7 @@ namespace Farmacie.Controllers
             return View(medicament);
         }
 
+        [Authorize(Roles = "Admin,Farmacist")]
         [HttpPost]
         public IActionResult Edit(int id, Medicament requestmedicament)
         {
@@ -92,6 +98,7 @@ namespace Farmacie.Controllers
         }
 
         //stergerea unui medicament din baza de date
+        [Authorize(Roles = "Admin,Farmacist")]
         [HttpPost]
         public IActionResult Delete(int id)
         {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Farmacie.Data;
 using Farmacie.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,31 +15,64 @@ namespace Farmacie.Controllers
     public class PatientsController : Controller
     {
         private readonly ApplicationDbContext db;
-        public PatientsController(ApplicationDbContext context)
+
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public PatientsController(ApplicationDbContext context,
+                                    UserManager<ApplicationUser> userManager,
+                                    RoleManager<IdentityRole> roleManager)
         {
             db = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         //afisam lista cu toti pacientii
+        [Authorize(Roles = "Admin,Farmacist")]
         public IActionResult Index()
         {
             var patients = from patient in db.Patients
                            select patient;
-            ViewBag.Patients = patients;
-            return View();
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            {
+                ViewBag.Patients = patients;
+                return View();
+            }
+
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa vedeti pacientii farmaciei!";
+                return Redirect("Home");
+            }
         }
 
         //afisare pacient dupa id
-        public IActionResult Show(int id)
+        [Authorize(Roles = "Admin,Farmacist,Customer")]
+        public IActionResult Show(string id)
         {
             Patient patient = db.Patients
                                 .Where(patient => patient.Id == id)
                                 .First();
-            return View(patient);
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist") || _userManager.GetUserId(User) == patient.Id)
+            {
+                return View(patient);
+            }
+
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa vedeti acest pacient al farmaciei!";
+                return RedirectToPage("/Home/Index");
+
+            }
         }
 
         //adaugare pacient
         //se afiseaza formularul de adaugare
+        [Authorize(Roles = "Admin,Farmacist")]
         public IActionResult New()
         {
             Patient patient = new Patient();
@@ -45,10 +80,11 @@ namespace Farmacie.Controllers
         }
 
         //se adauga pacientul in baza de date
+        [Authorize(Roles = "Admin,Farmacist")]
         [HttpPost]
         public IActionResult New(Patient patient)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Patients.Add(patient);
                 db.SaveChanges();
@@ -62,19 +98,33 @@ namespace Farmacie.Controllers
         }
 
         //se editeaza datele unui pacient
-        public IActionResult Edit(int id)
+        [Authorize(Roles = "Admin,Farmacist,Customer")]
+        public IActionResult Edit(string id)
         {
+            
             Patient patient = db.Patients.Where(p => p.Id == id)
                                         .First();
-            return View(patient);
+           
+
+            if(User.IsInRole("Admin") || User.IsInRole("Farmacist") || _userManager.GetUserId(User) == id)
+            {
+                return View(patient);
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa editati acest pacient al farmaciei!";
+                return RedirectToPage("/Home/Index");
+            }
+     
         }
 
+        [Authorize(Roles = "Admin,Farmacist,Customer")]
         [HttpPost]
-        public IActionResult Edit(int id, Patient requestpatient)
+        public IActionResult Edit(string id, Patient requestpatient)
         {
             Patient patient = db.Patients.Find(id);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 patient.FirstName = requestpatient.FirstName;
                 patient.LastName = requestpatient.LastName;
@@ -93,8 +143,9 @@ namespace Farmacie.Controllers
         }
 
         //se sterge un pacient din baza de date
+        [Authorize(Roles = "Admin,Farmacist")]
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
             Patient patient = db.Patients.Where(p => p.Id == id)
                                         .First();

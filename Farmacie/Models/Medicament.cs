@@ -27,8 +27,6 @@ namespace Farmacie.Models
 
         //nr bucati stoc
         public int Quantity { get; set; }
-
-        //public virtual ICollection<CommandMedicament>? CommandMedicaments { get; set; }
     }
 }
 

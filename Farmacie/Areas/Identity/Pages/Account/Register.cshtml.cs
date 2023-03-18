@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Farmacie.Data;
 
 namespace Farmacie.Areas.Identity.Pages.Account
 {
@@ -31,12 +32,15 @@ namespace Farmacie.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        private readonly ApplicationDbContext db;
+
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +48,7 @@ namespace Farmacie.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            db = context;
         }
 
         /// <summary>
@@ -98,6 +103,27 @@ namespace Farmacie.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+            //nume
+            [Required(ErrorMessage = "Numele este obligatoriu!")]
+            public string FirstName { get; set; }
+
+            //prenume
+            [Required(ErrorMessage = "Prenumele este obligatoriu!")]
+            public string LastName { get; set; }
+
+            //CNP
+            [Required(ErrorMessage = "CNP-ul este obligatoriu!")]
+            [StringLength(13, ErrorMessage = "CNP-ul trebuie sa contina 13 cifre!", MinimumLength = 13)]
+            public string CNP { get; set; }
+
+            //Telefon (nu obligatoriu)
+            public string? Phone { get; set; }
+
+            //Adresa (nu obligatorie)
+            public string? Address { get; set; }
+            //<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!! -->
         }
 
 
@@ -114,6 +140,13 @@ namespace Farmacie.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                Patient patient = new Patient();
+                patient.Id = user.Id;
+                patient.FirstName = Input.FirstName;
+                patient.LastName = Input.LastName;
+                patient.CNP = Input.CNP;
+                patient.Phone = Input.Phone;
+                patient.Address = Input.Address;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -126,6 +159,9 @@ namespace Farmacie.Areas.Identity.Pages.Account
 
                     // PASUL 9 - useri si roluri (adaugarea rolului la inregistrare)
                     await _userManager.AddToRoleAsync(user, "Customer");
+
+                    db.Patients.Add(patient);
+                    db.SaveChanges();
 
 
                     var userId = await _userManager.GetUserIdAsync(user);

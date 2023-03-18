@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Farmacie.Models
 {
@@ -17,15 +19,13 @@ namespace Farmacie.Models
         //numele pe care se face comanda
         //foreign key cu Patient
         [Required(ErrorMessage ="Numele pacientului este obligatoriu!")]
-        public int? PatientId { get; set; }
-        public virtual Patient? Patient { get; set; }
+        public string? PatientName { get; set; }
+
+        //public int? PatientId { get; set; }
+        //public virtual Patient? Patient { get; set; }
 
         //diagnostic pentru reteta
         public string? Diagnostic { get; set; }
-
-        //lista de medicamente
-        //public virtual ICollection<CommandMedicament>? CommandMedicaments { get; set; }
-
     }
 }
 

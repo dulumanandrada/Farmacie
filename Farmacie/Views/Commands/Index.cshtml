@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Lista de comenzi";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+@foreach (Farmacie.Models.Command command in ViewBag.Commands)
+{
+    <div>
+        @Html.Partial("CommandInfo", command)
+    </div>
+    <hr />
+    <br />
+}
