@@ -84,6 +84,8 @@ namespace Farmacie.Controllers
         [HttpPost]
         public IActionResult New(Patient patient)
         {
+            patient.Id = patient.CNP;
+
             if (ModelState.IsValid)
             {
                 db.Patients.Add(patient);

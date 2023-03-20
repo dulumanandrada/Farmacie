@@ -62,6 +62,9 @@ namespace Farmacie.Controllers
 
             if (command.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin") || User.IsInRole("Farmacist"))
             {
+                ViewBag.MedicamentsCommand = db.MedicamentCommands.Where(c => c.CommandId == id)
+                                                                    .ToList();
+
                 return View(command);
             }
 
@@ -107,6 +110,8 @@ namespace Farmacie.Controllers
 
             if (command.UserId == _userManager.GetUserId(User))
             {
+                ViewBag.MedicamentsCommand = db.MedicamentCommands.Where(c => c.CommandId == id)
+                                                                    .ToList();
                 return View(command);
             }
 

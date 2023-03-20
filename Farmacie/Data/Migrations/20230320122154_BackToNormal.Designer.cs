@@ -3,6 +3,7 @@ using System;
 using Farmacie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farmacie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320122154_BackToNormal")]
+    partial class BackToNormal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -139,27 +141,6 @@ namespace Farmacie.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicaments");
-                });
-
-            modelBuilder.Entity("Farmacie.Models.MedicamentCommand", b =>
-                {
-                    b.Property<int?>("MedicamentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CommandId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MedicamentName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("QuantityWanted")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MedicamentId", "CommandId");
-
-                    b.HasIndex("CommandId");
-
-                    b.ToTable("MedicamentCommands");
                 });
 
             modelBuilder.Entity("Farmacie.Models.Patient", b =>
@@ -332,25 +313,6 @@ namespace Farmacie.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Farmacie.Models.MedicamentCommand", b =>
-                {
-                    b.HasOne("Farmacie.Models.Command", "Command")
-                        .WithMany("MedicamentCommands")
-                        .HasForeignKey("CommandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Farmacie.Models.Medicament", "Medicament")
-                        .WithMany("MedicamentCommands")
-                        .HasForeignKey("MedicamentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Command");
-
-                    b.Navigation("Medicament");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -405,16 +367,6 @@ namespace Farmacie.Data.Migrations
             modelBuilder.Entity("Farmacie.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Commands");
-                });
-
-            modelBuilder.Entity("Farmacie.Models.Command", b =>
-                {
-                    b.Navigation("MedicamentCommands");
-                });
-
-            modelBuilder.Entity("Farmacie.Models.Medicament", b =>
-                {
-                    b.Navigation("MedicamentCommands");
                 });
 #pragma warning restore 612, 618
         }

@@ -29,9 +29,6 @@ routeValues: new { id = Model.Id }))
             @Html.TextArea("Diagnostic", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(c => c.Diagnostic, null, new { @class = "text-danger" })
             <br />
-
-            <label>Selectati medicamente</label>
-
             
             <button class="btn btn-success" type="submit">Adauga</button>
         }

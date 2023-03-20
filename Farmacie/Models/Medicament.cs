@@ -10,6 +10,7 @@ namespace Farmacie.Models
         public int Id { get; set; }
 
         //denumire
+        [Required(ErrorMessage = "Numele medicamentului este obligatoriu!")]
         public string Name { get; set; }
 
         //gramaj
@@ -22,11 +23,13 @@ namespace Farmacie.Models
         public string Lot { get; set; }
 
         //data expirare
-        [DisplayFormat(DataFormatString = "dd-mm-yyyy", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "dd-mm-yyyy", ApplyFormatInEditMode = true)]
         public DateTime ExpDate { get; set; }
 
         //nr bucati stoc
         public int Quantity { get; set; }
+
+        public virtual ICollection<MedicamentCommand>? MedicamentCommands { get; set; }
     }
 }
 

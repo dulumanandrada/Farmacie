@@ -4,6 +4,30 @@
 
 <div>
     @Html.Partial("MedicamentInfo", Model)
+    <br />
+
+    <form method="POST" asp-controller="Medicaments" asp-action="AddCommand">
+        <input type="hidden" name="MedicamentId" value="@Model.Id" />
+        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top" style="background-color:floralwhite">
+            <div>
+                <select name="CommandId" class="form-control">
+                    <option selected>Adauga acest medicament la comanda</option>
+                    @foreach (var com in ViewBag.UserCommands)
+                    {
+                        <option name="CommandId" value="@com.Id">@com.PatientName</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <input type="number" name="QuantityWanted" value="1" />
+            </div>
+            <div>
+                <input type="submit" class="btn btn-success alert-success" value="+" />
+            </div>
+        </div>
+    </form>
+
+    <br />
 
     <form method="post" action="/Medicaments/Delete/@Model.Id">
         <button class="btn btn-danger" type="submit">Sterge</button>

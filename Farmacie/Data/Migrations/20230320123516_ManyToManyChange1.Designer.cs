@@ -3,6 +3,7 @@ using System;
 using Farmacie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farmacie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320123516_ManyToManyChange1")]
+    partial class ManyToManyChange1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -143,21 +145,20 @@ namespace Farmacie.Data.Migrations
 
             modelBuilder.Entity("Farmacie.Models.MedicamentCommand", b =>
                 {
+                    b.Property<int>("MedicamentCommandId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("MedicamentId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("CommandId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("MedicamentName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("QuantityWanted")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MedicamentId", "CommandId");
+                    b.HasKey("MedicamentCommandId", "MedicamentId", "CommandId");
 
                     b.HasIndex("CommandId");
+
+                    b.HasIndex("MedicamentId");
 
                     b.ToTable("MedicamentCommands");
                 });

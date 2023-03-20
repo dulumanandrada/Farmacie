@@ -26,6 +26,8 @@ namespace Farmacie.Models
 
         //diagnostic pentru reteta
         public string? Diagnostic { get; set; }
+
+        public virtual ICollection<MedicamentCommand>? MedicamentCommands { get; set; }
     }
 }
 

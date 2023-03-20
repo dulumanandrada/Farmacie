@@ -1,11 +1,40 @@
 ﻿@model Farmacie.Models.Command
 
+
 <a class="btn btn-success" href="/Commands/Index">Inapoi</a>
 
 <div>
     @Html.Partial("CommandInfo", Model)
+    <br />
 
+    <div class="row">
+        @try
+        {
+            @foreach (var medicamentCommand in Model.MedicamentCommands)
+            {
+                <div class="col-4 mb-4">
+                    <div class="card-body">
+                        <p>@medicamentCommand.MedicamentId</p>
+                        <p>@medicamentCommand.MedicamentName</p>
+                        <p>@medicamentCommand.QuantityWanted</p>
+                    </div>
+                </div>
+
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            <p>aiurea moment..</p>
+        }
+
+    </div>
+
+    <a class="btn btn-success" href="/Medicaments/Index">Selectati medicamente</a>
+
+    <br />
     <form method="post" action="/Commands/Delete/@Model.Id">
         <button class="btn btn-danger" type="submit">Sterge</button>
     </form>
 </div>
+
+

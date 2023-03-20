@@ -5,9 +5,9 @@
 
 <div>
     @using (Html.BeginForm(actionName: "Edit",
-    controllerName: "Commands",
-    method: FormMethod.Post,
-    routeValues: new { id = Model.Id }))
+controllerName: "Commands",
+method: FormMethod.Post,
+routeValues: new { id = Model.Id }))
     {
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <br />
@@ -22,6 +22,31 @@
         @Html.ValidationMessageFor(c => c.Diagnostic, null, new { @class = "text-danger" })
         <br />
 
+
+        <div class="row">
+            @try
+            {
+                @foreach (var medicamentCommand in Model.MedicamentCommands)
+                {
+                    <div class="col-4 mb-4">
+                        <div class="card-body">
+                            @*<p>@medicamentCommand.MedicamentId</p>*@
+                            <p>@medicamentCommand.MedicamentName</p>
+                            <p>@medicamentCommand.QuantityWanted</p>
+                            <br />
+                        </div>
+                    </div>
+
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                <p>aiurea moment..</p>
+            }
+
+        </div>
+
         <button class="btn btn-success" type="submit">Modifica</button>
     }
 </div>
+
