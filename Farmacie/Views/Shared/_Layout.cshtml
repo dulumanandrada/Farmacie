@@ -17,30 +17,59 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Farmacie</a>
+                <img src="/images/logo1black.png" style="width:100px"/> 
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Commands" asp-action="Index">Comenzi</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Medicaments" asp-action="Index">Medicamente</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienti</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Utilizatori</a>
+                            </li>
+
+                        }
 
                         @if (User.IsInRole("Farmacist"))
                         {
-                            <li>
-                                <button>Farmacist</button>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Commands" asp-action="Index">Comenzi</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Medicaments" asp-action="Index">Medicamente</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Index">Pacienti</a>
                             </li>
                         }
+
+
                         @if (User.IsInRole("Customer"))
                         {
-                            <li>
-                                <button>Customer</button>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Commands" asp-action="Index">Comenzi</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Medicaments" asp-action="Index">Medicamente</a>
                             </li>
                         }
                     </ul>
@@ -58,7 +87,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Farmacie - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Farmacie - HEALTH.LIFE
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

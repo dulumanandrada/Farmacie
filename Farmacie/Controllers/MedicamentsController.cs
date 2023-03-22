@@ -33,7 +33,34 @@ namespace Farmacie.Controllers
         {
             var medicaments = from medicament in db.Medicaments
                               select medicament;
+            var search = "";
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Msg = TempData["message"];
+            }
+
+            // MOTOR DE CAUTARE
+
+            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            {
+                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim(); // eliminam spatiile libere 
+
+                // Cautare dupa nume
+                List<int> medicamentsIds = db.Medicaments.Where
+                                        (
+                                         at => at.Name.Contains(search)
+                                        ).Select(a => a.Id).ToList();
+
+                // Lista pacientilor
+                medicaments = db.Medicaments.Where(medicament => medicamentsIds.Contains(medicament.Id));
+
+            }
+
+            ViewBag.SearchString = search;
+
             ViewBag.Medicaments = medicaments;
+
             return View();
         }
 
@@ -47,7 +74,7 @@ namespace Farmacie.Controllers
             //adaugam si comenzile userului
             ViewBag.UserCommands = db.Commands.Where(c => c.UserId == _userManager.GetUserId(User))
                                                 .ToList();
-
+            SetAccessRights();
             return View(medicament);
         }
 
@@ -165,10 +192,18 @@ namespace Farmacie.Controllers
             return RedirectToAction("Index");
         }
 
+        private void SetAccessRights()
+        {
+            ViewBag.AfisareButoane = false;
 
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            {
+                ViewBag.AfisareButoane = true;
+            }
 
-       
-
+            ViewBag.EsteAdmin = User.IsInRole("Admin");
+            ViewBag.EsteFarmacist = User.IsInRole("Farmacist");
+        }
     }
 }
 

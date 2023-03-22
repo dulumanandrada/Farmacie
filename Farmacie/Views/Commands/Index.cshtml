@@ -5,11 +5,27 @@
 <h2>@ViewBag.Title</h2>
 <br />
 
-@foreach (Farmacie.Models.Command command in ViewBag.Commands)
+@if (TempData["message"] != null)
 {
-    <div>
-        @Html.Partial("CommandInfo", command)
-    </div>
-    <hr />
-    <br />
+    <h2 class="alert-success text-center mb-5 p-3">@ViewBag.Msg</h2>
 }
+
+<a class="btn buttondeep rounded-pill mb-5" href="/Commands/New">
+    <i class="bi bi-plus"></i> Adaugare comanda
+</a>
+
+<div class="row">
+    @foreach (Farmacie.Models.Command command in ViewBag.Commands)
+    {
+        <div class="col-6 mb-4">
+            <div class="card" style="height: 100%; width: 100%; background-color: #d7e7d9;">
+                <div class="card-body d-flex justify-content-between flex-column">
+                    <div>
+                        @Html.Partial("CommandInfo", command)
+                    </div>
+                    <a class="btn buttonverde1" href="/Commands/Show/@command.Id">Detalii</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -37,5 +37,9 @@
   <ItemGroup>
     <Folder Include="Views\Medicaments\" />
     <Folder Include="Views\Commands\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
   </ItemGroup>
 </Project>

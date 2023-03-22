@@ -40,6 +40,26 @@ namespace Farmacie.Controllers
             var users = from user in db.Users
                         orderby user.UserName
                         select user;
+            var search = "";
+
+            // MOTOR DE CAUTARE
+
+            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            {
+                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim(); // eliminam spatiile libere 
+
+                // Cautare dupa nume
+                List<string> usersIds = db.Users.Where
+                                        (
+                                         at => at.UserName.Contains(search)
+                                        ).Select(a => a.Id).ToList();
+
+                // Lista pacientilor
+                users = (IOrderedQueryable<ApplicationUser>)db.Users.Where(user => usersIds.Contains(user.Id));
+
+            }
+
+            ViewBag.SearchString = search;
 
             ViewBag.UsersList = users;
 
@@ -124,6 +144,15 @@ namespace Farmacie.Controllers
                 }
             }
             */
+
+            //stergem si comenzile userului odata cu acesta
+            if(user.Commands.Count > 0)
+            {
+                foreach(var com in user.Commands)
+                {
+                    db.Commands.Remove(com);
+                }
+            }
 
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();

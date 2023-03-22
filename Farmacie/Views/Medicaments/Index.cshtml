@@ -5,11 +5,39 @@
 <h2>@ViewBag.Title</h2>
 <br />
 
-@foreach (Farmacie.Models.Medicament medicament in ViewBag.Medicaments)
+@if (TempData["message"] != null)
 {
-    <div>
-        @Html.Partial("MedicamentInfo", medicament)
-    </div>
-    <hr />
-    <br />
+    <h2 class="alert-success text-center mb-5 p-3">@ViewBag.Msg</h2>
 }
+
+@* Motorul de cautare *@
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Cauta dupa nume" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success" type="submit">Cauta</button>
+    </div>
+</form>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+{
+    <a class="btn buttondeep rounded-pill mb-5" href="/Medicaments/New">
+        <i class="bi bi-plus"></i> Adaugare medicament
+    </a>
+}
+
+<div class="row">
+    @foreach (Farmacie.Models.Medicament medicament in ViewBag.Medicaments)
+    {
+        <div class="col-4 mb-4">
+            <div class="card" style="height: 100%; width: 100%; background-color: #d7e7d9;">
+                <div class="card-body d-flex justify-content-between flex-column">
+                    <div>
+                        @Html.Partial("MedicamentInfo", medicament)
+                    </div>
+                    <a class="btn buttonverde1" href="/Medicaments/Show/@medicament.Id">Detalii</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

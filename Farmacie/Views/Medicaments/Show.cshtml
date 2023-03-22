@@ -1,14 +1,20 @@
 ﻿@model Farmacie.Models.Medicament
 
-<a class="btn btn-success" href="/Medicaments/Index">Inapoi</a>
+<a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Medicaments/Index">Inapoi</a>
+
+<br />
 
 <div>
-    @Html.Partial("MedicamentInfo", Model)
+    <img src="/images/pill.png" style="height: 400px; float:right; padding-right: 5%;" />
+    <div class="card col-8 mb-6" style="background-color: #45625d; color: #a3d2d5; padding-left: 2%; padding-top: 2%;">
+        @Html.Partial("MedicamentInfo", Model)
+    </div>
+    
     <br />
 
     <form method="POST" asp-controller="Medicaments" asp-action="AddCommand">
         <input type="hidden" name="MedicamentId" value="@Model.Id" />
-        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top" style="background-color:floralwhite">
+        <div class="card col-8 mb-6 d-flex flex-row justify-content-center p-3 border-1 border-top rounded-pill mb5" style="background-color:#a3d2d5">
             <div>
                 <select name="CommandId" class="form-control">
                     <option selected>Adauga acest medicament la comanda</option>
@@ -19,17 +25,29 @@
                 </select>
             </div>
             <div>
-                <input type="number" name="QuantityWanted" value="1" />
+                <input class="form-control" type="number" name="QuantityWanted" value="1" />
             </div>
             <div>
-                <input type="submit" class="btn btn-success alert-success" value="+" />
+                <input type="submit" class="btn buttonsheen" value="+" />
             </div>
         </div>
     </form>
 
+
+    @if (ViewBag.AfisareButoane == true)
+    {
+        <div class="col-8 mb-6 d-flex flex-row justify-content-between p-3">
+
+            <a class="btn buttonsheen" href="/Medicaments/Edit/@Model.Id">Editeaza medicamentul</a>
+
+            <form method="post" action="/Medicaments/Delete/@Model.Id">
+
+                <button class="btn buttondeep" type="submit">Sterge medicamentul</button>
+
+            </form>
+
+        </div>
+    }
     <br />
 
-    <form method="post" action="/Medicaments/Delete/@Model.Id">
-        <button class="btn btn-danger" type="submit">Sterge</button>
-    </form>
 </div>

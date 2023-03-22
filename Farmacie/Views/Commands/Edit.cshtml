@@ -3,6 +3,8 @@
 <h2>Editare comanda</h2>
 <br />
 
+<a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Commands/Show/@Model.Id">Inapoi</a>
+
 <div>
     @using (Html.BeginForm(actionName: "Edit",
 controllerName: "Commands",
@@ -30,7 +32,6 @@ routeValues: new { id = Model.Id }))
                 {
                     <div class="col-4 mb-4">
                         <div class="card-body">
-                            @*<p>@medicamentCommand.MedicamentId</p>*@
                             <p>@medicamentCommand.MedicamentName</p>
                             <p>@medicamentCommand.QuantityWanted</p>
                             <br />
@@ -46,7 +47,7 @@ routeValues: new { id = Model.Id }))
 
         </div>
 
-        <button class="btn btn-success" type="submit">Modifica</button>
+        <button class="btn buttondeep" type="submit">Modifica</button>
     }
 </div>
 

@@ -1,64 +1,64 @@
 ﻿@model Farmacie.Models.ApplicationUser
 
+<a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Users/Show/@Model.Id">Inapoi</a>
+<div class="card col-12 mb-12 px-4 py-4" style="background-color: #a3d2d5">
+    @using (Html.BeginForm(actionName: "Edit", controllerName: "Users",
+            method: FormMethod.Post, routeValues: new { id = @Model.Id }))
+    {
+
+        <i class="bi bi-person"></i>
+        @Html.Label("UserName", "Nume utilizator")
+
+        <br />
+
+        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control" } })
+
+        <br />
+
+        <i class="bi bi-envelope"></i>
+        @Html.Label("Email", "Email utilizator")
+
+        <br />
+
+        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
+
+        <br />
+
+        <i class="bi bi-phone"></i>
+        @Html.Label("PhoneNumber", "Numar telefon")
+
+        <br />
+
+        @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+
+        <br />
+
+        <i class="bi bi-person"></i>
+        @Html.Label("FirstName", "Nume utilizator")
+
+        <br />
+
+        @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+
+        <br />
+
+        <i class="bi bi-person"></i>
+        @Html.Label("LastName", "Prenume utilizator")
+
+        <br />
+
+        @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
+
+        <br />
+
+        <i class="bi bi-card-list"></i>
+        <label>Selectati rolul</label>
+        @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
+
+        <br />
+
+        <button class="btn buttondeep" type="submit">Editare user</button>
 
 
-@using (Html.BeginForm(actionName: "Edit", controllerName: "Users",
-        method: FormMethod.Post, routeValues: new { id = @Model.Id }))
-{
-
-    <i class="bi bi-person"></i>
-    @Html.Label("UserName", "Nume utilizator", new { @class = "" })
-
-    <br />
-
-    @Html.EditorFor(m => m.UserName)
-
-    <br />
-
-    <i class="bi bi-envelope"></i>
-    @Html.Label("Email", "Email utilizator", new { @class = "" })
-
-    <br />
-
-    @Html.EditorFor(m => m.Email)
-
-    <br />
-
-    <i class="bi bi-phone"></i>
-    @Html.Label("PhoneNumber", "Numar telefon")
-
-    <br />
-
-    @Html.EditorFor(m => m.PhoneNumber)
-
-    <br />
-
-    <i class="bi bi-person"></i>
-    @Html.Label("FirstName", "Nume utilizator", new { @class = "" })
-
-    <br />
-
-    @Html.EditorFor(m => m.FirstName)
-
-    <br />
-
-    <i class="bi bi-person"></i>
-    @Html.Label("LastName", "Prenume utilizator", new { @class = "" })
-
-    <br />
-
-    @Html.EditorFor(m => m.LastName)
-
-    <br />
-
-    <i class="bi bi-card-list"></i>
-    <label>Selectati rolul</label>
-    @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
-
-    <br />
-
-    <button class="btn btn-sm btn-success" type="submit">Editare user</button>
-
-
-}
-
+    }
+</div>

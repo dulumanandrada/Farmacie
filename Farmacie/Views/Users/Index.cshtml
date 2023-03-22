@@ -1,13 +1,26 @@
 ﻿@model Farmacie.Models.ApplicationUser
+@{
+    ViewBag.Title = "Lista de useri";
+}
+
+<h2>@ViewBag.Title</h2>
 <br />
-<br />
+
+@* Motorul de cautare *@
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Cauta dupa UserName" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success" type="submit">Cauta</button>
+    </div>
+</form>
 
 <div class="row">
 
     @foreach (var user in ViewBag.UsersList)
     {
         <div class="col-4 mb-4">
-            <div class="card" style="height:100%; width: 100%;">
+            <div class="card" style="height: 100%; width: 100%; background-color: #d7e7d9;">
 
                 <div class="card-body d-flex justify-content-between flex-column">
                     <div>
@@ -36,9 +49,9 @@
                     </div>
                     <div class="d-flex flex-row justify-content-between p-3">
 
-                        <div> <a class="btn btn-sm btn-success" href="/Users/Edit/@user.Id"> Editare utilizator</a> </div>
+                        <div> <a class="btn btn-sm buttondeep" href="/Users/Edit/@user.Id"> Editare utilizator</a> </div>
 
-                        <div> <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> Vizualizare utilizator</a> </div>
+                        <div> <a class="btn btn-sm buttonverde1" href="/Users/Show/@user.Id"> Vizualizare utilizator</a> </div>
 
                     </div>
                 </div>

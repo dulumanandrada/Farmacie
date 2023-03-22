@@ -33,7 +33,12 @@ namespace Farmacie.Controllers
         //afisare lista cu toate comenzile
         public IActionResult Index()
         {
-            if(User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Msg = TempData["message"];
+            }
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
             {
                 var commands = db.Commands.Include("User")
                                             .OrderBy(a => a.Id);
@@ -59,12 +64,12 @@ namespace Farmacie.Controllers
                                     .Include("User")
                                     .Where(c => c.Id == id)
                                     .First();
+            SetAccessRights();
 
             if (command.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin") || User.IsInRole("Farmacist"))
             {
                 ViewBag.MedicamentsCommand = db.MedicamentCommands.Where(c => c.CommandId == id)
                                                                     .ToList();
-
                 return View(command);
             }
 
@@ -163,7 +168,7 @@ namespace Farmacie.Controllers
             {
                 db.Commands.Remove(command);
                 db.SaveChanges();
-                TempData["message"] = "Comanda a fost sters!";
+                TempData["message"] = "Comanda a fost stearsa!";
                 return RedirectToAction("Index");
             }
             else
@@ -194,6 +199,20 @@ namespace Farmacie.Controllers
             }
 
             return selectList;
+        }
+
+        private void SetAccessRights()
+        {
+            ViewBag.AfisareButoane = false;
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            {
+                ViewBag.AfisareButoane = true;
+            }
+
+            ViewBag.UserCurent = _userManager.GetUserId(User);
+            ViewBag.EsteAdmin = User.IsInRole("Admin");
+            ViewBag.EsteFarmacist = User.IsInRole("Farmacist");
         }
     }
 }

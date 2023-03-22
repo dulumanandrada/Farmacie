@@ -16,3 +16,52 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#img_welcome {
+    float: right;
+    margin-right: 5%;
+    height: 50%;
+    width: 45%;
+}
+
+#lr_welcome {
+    float: left;
+    margin-left: 5%;
+    width: 45%;
+    align-content: space-evenly;
+}
+
+.buttonverde1 {
+    background-color: #688e65;
+    color: white;
+}
+
+.buttonverde2 {
+    background-color: #82ab80;
+    color: white;
+}
+
+.buttonmaro {
+    background-color: #75706d;
+    color: white;
+}
+
+.buttonamazon {
+    background-color: #3f7856;
+    color: white;
+}
+
+.buttondeep {
+    background-color: #45625d;
+    color: white;
+}
+
+.buttonsheen {
+    background-color: #6aa5a9;
+    color: black;
+}
+
+.buttonpale {
+    background-color: #a3d2d5;
+    color: black;
+}

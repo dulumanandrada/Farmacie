@@ -1,40 +1,51 @@
 ﻿@model Farmacie.Models.Command
 
 
-<a class="btn btn-success" href="/Commands/Index">Inapoi</a>
+<a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Commands/Index">Inapoi</a>
 
 <div>
-    @Html.Partial("CommandInfo", Model)
-    <br />
+    <div>
+        <div class="card col-12 mb-6" style="background-color: #45625d; color: #a3d2d5; padding-left: 2%; padding-top: 2%;">
+            @Html.Partial("CommandInfo", Model)
+        </div>
 
-    <div class="row">
-        @try
-        {
-            @foreach (var medicamentCommand in Model.MedicamentCommands)
-            {
-                <div class="col-4 mb-4">
-                    <div class="card-body">
-                        <p>@medicamentCommand.MedicamentId</p>
-                        <p>@medicamentCommand.MedicamentName</p>
-                        <p>@medicamentCommand.QuantityWanted</p>
+        <br />
+
+        <div class="row">
+            @try
+            {   
+                @foreach (var medicamentCommand in Model.MedicamentCommands)
+                {
+                    <div class="col-4 mb-4">
+                        <div class="card" style="height: 100%; width: 100%; background-color: #a3d2d5;">
+                            <div class="card-body d-flex justify-content-between flex-column">
+                                <p>Nume medicament: @medicamentCommand.MedicamentName</p>
+                                <p>Cantitate dorita: @medicamentCommand.QuantityWanted</p>
+                            </div>
+                            <a class="btn buttondeep" href="/Medicaments/Show/@medicamentCommand.MedicamentId">Detalii</a>
+                        </div>
                     </div>
-                </div>
+                }
+             }
+             catch (NullReferenceException e)
+             {
+                    <p><strong>Nu exista inca medicamente selectate!</strong></p>
+             }
 
-            }
-        }
-        catch (NullReferenceException e)
-        {
-            <p>aiurea moment..</p>
-        }
+        </div>
+
+        @if (ViewBag.UserCurent == Model.UserId)
+         {
+            <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
+
+                <a class="btn buttonsheen" href="/Medicaments/Index">Selectati medicamente</a>
+
+                <form method="post" action="/Commands/Delete/@Model.Id">
+                    <button class="btn buttondeep" type="submit">Sterge</button>
+                </form>
+
+            </div>
+         }
 
     </div>
-
-    <a class="btn btn-success" href="/Medicaments/Index">Selectati medicamente</a>
-
-    <br />
-    <form method="post" action="/Commands/Delete/@Model.Id">
-        <button class="btn btn-danger" type="submit">Sterge</button>
-    </form>
 </div>
-
-

@@ -3,7 +3,9 @@
 <h2>Editare medicament</h2>
 <br />
 
-<div>
+<a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Medicaments/Show/@Model.Id">Inapoi</a>
+
+<div class="card col-12 mb-12 px-4 py-4" style="background-color: #a3d2d5">
     @using (Html.BeginForm(actionName: "Edit",
       controllerName: "Medicaments",
       method: FormMethod.Post,
@@ -42,6 +44,6 @@
         @Html.ValidationMessageFor(m => m.Quantity, null, new { @class = "text-danger" })
         <br />
 
-        <button class="btn btn-success" type="submit">Modifica</button>
+        <button class="btn buttondeep" type="submit">Modifica</button>
     }
 </div>

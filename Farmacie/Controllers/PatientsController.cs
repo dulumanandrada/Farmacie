@@ -35,10 +35,41 @@ namespace Farmacie.Controllers
         {
             var patients = from patient in db.Patients
                            select patient;
+            var search = "";
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Msg = TempData["message"];
+            }
+
+            
 
             if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
             {
+                // MOTOR DE CAUTARE
+
+                if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+                {
+                    search = Convert.ToString(HttpContext.Request.Query["search"]).Trim(); // eliminam spatiile libere 
+
+                    // Cautare dupa nume
+                    List<string> patientsIds = db.Patients.Where
+                                            (
+                                             at => at.LastName.Contains(search)
+                                             || at.FirstName.Contains(search)
+                                             || at.CNP.Contains(search)
+                                            ).Select(a => a.Id).ToList();
+
+                    // Lista pacientilor
+                    patients = db.Patients.Where(patient => patientsIds.Contains(patient.Id));
+
+                }
+
+                ViewBag.SearchString = search;
+
                 ViewBag.Patients = patients;
+
+                SetAccessRights();
                 return View();
             }
 
@@ -59,6 +90,7 @@ namespace Farmacie.Controllers
 
             if (User.IsInRole("Admin") || User.IsInRole("Farmacist") || _userManager.GetUserId(User) == patient.Id)
             {
+                SetAccessRights();
                 return View(patient);
             }
 
@@ -155,6 +187,20 @@ namespace Farmacie.Controllers
             db.SaveChanges();
             TempData["message"] = "Pacientul a fost sters din baza de date";
             return RedirectToAction("Index");
+        }
+
+        private void SetAccessRights()
+        {
+            ViewBag.AfisareButoane = false;
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            {
+                ViewBag.AfisareButoane = true;
+            }
+
+            ViewBag.UserCurent = _userManager.GetUserId(User);
+            ViewBag.EsteAdmin = User.IsInRole("Admin");
+            ViewBag.EsteFarmacist = User.IsInRole("Farmacist");
         }
     }
 }
