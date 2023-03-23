@@ -183,6 +183,21 @@ namespace Farmacie.Controllers
         {
             Patient patient = db.Patients.Where(p => p.Id == id)
                                         .First();
+
+            //stergem si userul asociat pacientului daca exista
+            foreach(var user in db.Users)
+            {
+                if (user.Id == id)
+                    db.Users.Remove(user);
+            }
+
+            //stergem si comenzile pacientului/userului odata cu acesta
+            foreach (var com in db.Commands)
+            {
+                if (com.UserId == id)
+                    db.Commands.Remove(com);
+            }
+
             db.Patients.Remove(patient);
             db.SaveChanges();
             TempData["message"] = "Pacientul a fost sters din baza de date";

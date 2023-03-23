@@ -1,7 +1,19 @@
 ﻿@model Farmacie.Models.Command
 
-
 <a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Commands/Index">Inapoi</a>
+<div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+    {
+        @*<a class="btn buttonverde1" href="/Commands/ChangeStatus/@Model.Id">Status</a>*@
+        @if(Model.Status != "ACCEPTED")
+                {
+                    <form method="post" action="/Commands/ChangeStatus/@Model.Id">
+                        <button class="btn buttonverde1" type="submit">Accepta comanda</button>
+                    </form>
+                }
+    }
+</div>
+<br />
 
 <div>
     <div>
@@ -34,11 +46,13 @@
 
         </div>
 
-        @if (ViewBag.UserCurent == Model.UserId)
+        @if (ViewBag.UserCurent == Model.UserId && Model.Status != "ACCEPTED")
          {
             <div class="d-flex flex-row justify-content-between p-3 border-1 border-top">
 
                 <a class="btn buttonsheen" href="/Medicaments/Index">Selectati medicamente</a>
+
+                <a class="btn buttonsheen" href="/Commands/Edit/@Model.Id">Editati</a>
 
                 <form method="post" action="/Commands/Delete/@Model.Id">
                     <button class="btn buttondeep" type="submit">Sterge</button>

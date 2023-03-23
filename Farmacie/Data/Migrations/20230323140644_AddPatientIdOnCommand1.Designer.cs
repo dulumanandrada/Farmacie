@@ -3,6 +3,7 @@ using System;
 using Farmacie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farmacie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230323140644_AddPatientIdOnCommand1")]
+    partial class AddPatientIdOnCommand1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -96,11 +98,14 @@ namespace Farmacie.Data.Migrations
                     b.Property<string>("Diagnostic")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<int?>("PatientId")
                         .IsRequired()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PatientId1")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PatientId")
+                    b.Property<string>("PatientName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -112,7 +117,7 @@ namespace Farmacie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("PatientId1");
 
                     b.HasIndex("UserId");
 
@@ -336,9 +341,7 @@ namespace Farmacie.Data.Migrations
                 {
                     b.HasOne("Farmacie.Models.Patient", "Patient")
                         .WithMany("Commands")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientId1");
 
                     b.HasOne("Farmacie.Models.ApplicationUser", "User")
                         .WithMany("Commands")

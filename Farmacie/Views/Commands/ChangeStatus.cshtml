@@ -1,0 +1,72 @@
+﻿@model Farmacie.Models.Command
+
+<h2>Editare status comanda</h2>
+<br />
+
+<a class="btn buttonmaro bi bi-arrow-left rounded-pill mb-5" href="/Commands/Show/@Model.Id">Inapoi</a>
+
+<div>
+    <div class="card col-12 mb-6" style="background-color: #45625d; color: #a3d2d5; padding-left: 2%; padding-top: 2%;">
+        @Html.Partial("CommandInfo", Model)
+    </div>
+
+    <br />
+
+    <div class="row">
+        @try
+        {
+            @foreach (var medicamentCommand in Model.MedicamentCommands)
+            {
+                <div class="col-4 mb-4">
+                    <div class="card" style="height: 100%; width: 100%; background-color: #a3d2d5;">
+                        <div class="card-body d-flex justify-content-between flex-column">
+                            <p>Nume medicament: @medicamentCommand.MedicamentName</p>
+                            <p>Cantitate dorita: @medicamentCommand.QuantityWanted</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            <p><strong>Nu exista inca medicamente selectate!</strong></p>
+        }
+
+    </div>
+
+    <div class="col-4 mb-4">
+
+        @using (Html.BeginForm(actionName: "ChangeStatus",
+           controllerName: "Commands",
+           method: FormMethod.Post,
+           routeValues: new { id = Model.Id }))
+        {
+
+
+            <label>Selectati rolul</label>
+            @Html.DropDownList("newstatus", new SelectList(Model.AllStatus, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
+
+
+            <button class="btn buttondeep" type="submit">Modifica</button>
+        }
+
+    </div>
+
+</div>
+
+@*<div>
+    @using (Html.BeginForm(actionName: "ChangeStatus",
+      controllerName: "Commands",
+      method: FormMethod.Post,
+      routeValues: new { id = Model.Id }))
+    {
+
+
+        <label>Selectati rolul</label>
+        @Html.DropDownList("newstatus", new SelectList(Model.AllStatus, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
+
+
+        <button class="btn buttondeep" type="submit">Modifica</button>
+    }
+</div>*@
+

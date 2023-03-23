@@ -135,26 +135,26 @@ namespace Farmacie.Controllers
                          .Where(u => u.Id == id)
                          .First();
 
-            /* Delete user commands
-            if (user.Articles.Count > 0)
-            {
-                foreach (var article in user.Articles)
-                {
-                    db.Articles.Remove(article);
-                }
-            }
-            */
+            //cautam pacientul cu acelasi id
+            var patient = db.Patients
+                            .Where(p => p.Id == id)
+                            .First();
 
             //stergem si comenzile userului odata cu acesta
-            if(user.Commands.Count > 0)
+            foreach(var com in db.Commands)
             {
-                foreach(var com in user.Commands)
-                {
+                if (com.UserId == id)
                     db.Commands.Remove(com);
-                }
             }
 
             db.ApplicationUsers.Remove(user);
+
+            //stergem si pacientul asociat userului
+            if (patient != null)
+            {
+                db.Patients.Remove(patient);
+            }
+
             db.SaveChanges();
 
             return RedirectToAction("Index");

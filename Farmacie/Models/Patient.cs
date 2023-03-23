@@ -27,6 +27,8 @@ namespace Farmacie.Models
 
         //Adresa (nu obligatorie)
         public string? Address { get; set; }
+
+        public virtual ICollection<Command>? Commands { get; set; }
     }
 }
 

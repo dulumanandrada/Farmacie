@@ -14,9 +14,13 @@ routeValues: new { id = Model.Id }))
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <br />
 
-        @Html.Label("PatientName", "Nume pacient")
-        @Html.EditorFor(c => c.PatientName, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(c => c.PatientName, null, new { @class = "text-danger" })
+        @Html.Label("Name", "Nume comanda")
+        @Html.EditorFor(c => c.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.Name, null, new { @class = "text-danger" })
+        <br />
+
+        @Html.Label("PatientId", "Pacient")
+        @Html.DropDownList("PatientId", new SelectList(Model.AllPatients, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
         <br />
 
         @Html.Label("Diagnostic", "Diagnostic")
@@ -31,18 +35,18 @@ routeValues: new { id = Model.Id }))
                 @foreach (var medicamentCommand in Model.MedicamentCommands)
                 {
                     <div class="col-4 mb-4">
-                        <div class="card-body">
-                            <p>@medicamentCommand.MedicamentName</p>
-                            <p>@medicamentCommand.QuantityWanted</p>
-                            <br />
+                        <div class="card" style="height: 100%; width: 100%; background-color: #a3d2d5;">
+                            <div class="card-body d-flex justify-content-between flex-column">
+                                <p>Nume medicament: @medicamentCommand.MedicamentName</p>
+                                <p>Cantitate dorita: @medicamentCommand.QuantityWanted</p>
+                            </div>
                         </div>
                     </div>
-
                 }
             }
             catch (NullReferenceException e)
             {
-                <p>aiurea moment..</p>
+                <p><strong>Nu exista inca medicamente selectate!</strong></p>
             }
 
         </div>

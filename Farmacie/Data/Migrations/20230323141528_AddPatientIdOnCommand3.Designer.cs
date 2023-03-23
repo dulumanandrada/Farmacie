@@ -3,6 +3,7 @@ using System;
 using Farmacie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farmacie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230323141528_AddPatientIdOnCommand3")]
+    partial class AddPatientIdOnCommand3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -96,11 +98,11 @@ namespace Farmacie.Data.Migrations
                     b.Property<string>("Diagnostic")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("PatientId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PatientId")
+                    b.Property<string>("PatientName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

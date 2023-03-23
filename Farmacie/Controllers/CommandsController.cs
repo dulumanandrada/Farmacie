@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Farmacie.Data;
 using Farmacie.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -85,6 +87,7 @@ namespace Farmacie.Controllers
         {
             Command command = new Command();
             //command.Med = GetAllMedicaments();
+            command.AllPatients = GetAllPatients();
 
             return View(command);
         }
@@ -92,8 +95,11 @@ namespace Farmacie.Controllers
         [HttpPost]
         public IActionResult New(Command command)
         {
+            command.AllPatients = GetAllPatients();
             command.UserId = _userManager.GetUserId(User);
-            if(ModelState.IsValid)
+            command.Status = "WAITING";
+
+            if (ModelState.IsValid)
             {
                 db.Commands.Add(command);
                 db.SaveChanges();
@@ -107,13 +113,135 @@ namespace Farmacie.Controllers
             }
         }
 
+        //=====================================================================
+        [Authorize(Roles = "Admin,Farmacist")]
+        //se accepta o comanda
+        [HttpPost]
+        public IActionResult ChangeStatus(int id)
+        {
+            Command command = db.Commands.Include("User")
+                                    .Where(c => c.Id == id)
+                                    .First();
+            bool ok = true;
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            {
+                ViewBag.MedicamentsCommand = db.MedicamentCommands.Where(c => c.CommandId == id)
+                                                                    .ToList();
+                //var medcom = from med in db.MedicamentCommands
+                //             select med;
+                var medcom = db.MedicamentCommands.Where(c => c.CommandId == id)
+                                                                    .ToList();
+
+                foreach (var mc in medcom)
+                {
+                    var medicament = db.Medicaments.Where(a => a.Id == mc.MedicamentId).First();
+                    if (mc.QuantityWanted > medicament.Quantity)
+                        ok = false;
+                }
+
+                if(ok == true)
+                {
+                    foreach (var mc in medcom)
+                    {
+                        Medicament medicament = db.Medicaments.Find(mc.MedicamentId);
+                        int a = medicament.Quantity;
+                        int b;
+                        if (mc.QuantityWanted == null)
+                        {
+                            b = 0;
+                        }
+                        else
+                        {
+                            b = (int)mc.QuantityWanted;
+                        }
+                        medicament.Quantity = a - b;
+
+                    }
+                    TempData["message"] = "Comanda a fost acceptata!";
+                    command.Status = "ACCEPTED";
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["message"] = "Comanda nu poate fi acceptata! Stoc insuficient!";
+                    return RedirectToAction("Index");
+                }  
+            }
+
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra statusului!";
+                return RedirectToAction("Index");
+            }
+        }
+
+
+
+
+        //[Authorize(Roles = "Admin,Farmacist")]
+        ////se editeaza statusul
+        //public IActionResult ChangeStatus(int id)
+        //{
+        //    Command command = db.Commands.Include("User")
+        //                            .Where(c => c.Id == id)
+        //                            .First();
+        //    command.AllStatus = GetAllStatus();
+
+        //    if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+        //    {
+        //        ViewBag.MedicamentsCommand = db.MedicamentCommands.Where(c => c.CommandId == id)
+        //                                                            .ToList();
+        //        return View(command);
+        //    }
+
+        //    else
+        //    {
+        //        TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra statusului!";
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
+        //[Authorize(Roles = "Admin,Farmacist")]
+        //[HttpPost]
+        //public IActionResult ChangeStatus(int id, [FromForm] string newstatus)
+        //{
+        //    Command command = db.Commands.Find(id);
+
+        //    command.AllStatus = GetAllStatus();
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+        //        {
+        //            command.Status = newstatus;
+
+        //            TempData["message"] = "Comanda a fost modificata!";
+        //            db.SaveChanges();
+        //            return RedirectToAction("Index");
+        //        }
+        //        else
+        //        {
+        //            TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra statusului!";
+        //            return RedirectToAction("Index");
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        return View(command);
+        //    }
+        //}
+
         //se editeaza datele unei comenzi
         public IActionResult Edit(int id)
         {
             Command command = db.Commands.Where(c => c.Id == id)
                                                     .First();
+            command.AllPatients = GetAllPatients();
 
-            if (command.UserId == _userManager.GetUserId(User))
+            if (command.UserId == _userManager.GetUserId(User) && command.Status != "ACCEPTED")
             {
                 ViewBag.MedicamentsCommand = db.MedicamentCommands.Where(c => c.CommandId == id)
                                                                     .ToList();
@@ -131,16 +259,19 @@ namespace Farmacie.Controllers
         public IActionResult Edit(int id, Command requestcommand)
         {
             Command command = db.Commands.Find(id);
+            command.AllPatients = GetAllPatients();
 
             if (ModelState.IsValid)
             {
-                if(command.UserId == _userManager.GetUserId(User))
+                if (command.UserId == _userManager.GetUserId(User))
                 {
-                    command.PatientName = requestcommand.PatientName;
+                    command.Name = requestcommand.Name;
                     command.Diagnostic = requestcommand.Diagnostic;
+                    command.PatientId = requestcommand.PatientId;
+                    command.Patient = requestcommand.Patient;
                     //command.CommandMedicaments = requestcommand.CommandMedicaments;
 
-                    TempData["message"] = "Comanda a fost modificat!";
+                    TempData["message"] = "Comanda a fost modificata!";
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -149,7 +280,7 @@ namespace Farmacie.Controllers
                     TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unei comenzi ce nu va apartine";
                     return RedirectToAction("Index");
                 }
-                
+
             }
             else
             {
@@ -164,7 +295,7 @@ namespace Farmacie.Controllers
             Command command = db.Commands.Where(c => c.Id == id)
                                                     .First();
 
-            if(command.UserId == _userManager.GetUserId(User))
+            if (command.UserId == _userManager.GetUserId(User))
             {
                 db.Commands.Remove(command);
                 db.SaveChanges();
@@ -185,7 +316,7 @@ namespace Farmacie.Controllers
 
             //extragem toate categoriile din baza de date
             var medicaments = from med in db.Medicaments
-                             select med;
+                              select med;
 
             //iteram prin categorii
             foreach (var medicament in medicaments)
@@ -200,6 +331,76 @@ namespace Farmacie.Controllers
 
             return selectList;
         }
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllPatients()
+        {
+            var selectList = new List<SelectListItem>();
+
+            if (User.IsInRole("Admin") || User.IsInRole("Farmacist"))
+            {
+                //extragem toate categoriile din baza de date
+                var patients = from pat in db.Patients
+                               select pat;
+
+                //iteram prin categorii
+                foreach (var patient in patients)
+                {
+                    //adaugam in lista categoriile
+                    selectList.Add(new SelectListItem
+                    {
+                        Value = patient.Id.ToString(),
+                        Text = patient.FirstName.ToString() + " " + patient.LastName.ToString()
+                    });
+                }
+            }
+            else
+            {
+                //var patient = db.Patients.Where(a => a.Id == _userManager.GetUserId(User))
+                //                            .First();
+                //selectList.Add(new SelectListItem
+                //{
+                //    Value = patient.Id.ToString(),
+                //    Text = patient.FirstName.ToString() + " " + patient.LastName.ToString()
+                //});
+                selectList.Add(new SelectListItem
+                {
+                    Value = _userManager.GetUserId(User),
+                    Text = _userManager.GetUserName(User)
+                });
+            }
+            
+
+            return selectList;
+        }
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllStatus()
+        {
+            var selectList = new List<SelectListItem>();
+
+            selectList.Add(new SelectListItem
+            {
+                Value = "WAITING",
+                Text = "WAITING"
+            });
+
+            selectList.Add(new SelectListItem
+            {
+                Value = "ACCEPTED",
+                Text = "ACCEPTED"
+            });
+
+            selectList.Add(new SelectListItem
+            {
+                Value = "DECLINED",
+                Text = "DECLINED"
+            });
+
+            return selectList;
+        }
+
+
 
         private void SetAccessRights()
         {

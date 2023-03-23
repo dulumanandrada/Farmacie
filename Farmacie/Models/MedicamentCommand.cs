@@ -16,6 +16,7 @@ namespace Farmacie.Models
 
         public string? MedicamentName { get; set; }
         public int? QuantityWanted { get; set; }
+
         //-------------------------------------------------
         public virtual Medicament? Medicament { get; set; }
         public virtual Command? Command { get; set; }

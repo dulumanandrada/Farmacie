@@ -14,11 +14,15 @@ routeValues: new { id = Model.Id }))
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             <br />
 
-            @Html.Label("PatientName", "Nume pacient")
+            @Html.Label("Name", "Nume comanda")
             <br />
 
-            @Html.TextBox("PatientName", null, new { @class = "form-control" })
-            @Html.ValidationMessageFor(c => c.PatientName, null, new { @class = "text-danger" })
+            @Html.TextBox("Name", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Name, null, new { @class = "text-danger" })
+            <br />
+
+            @Html.Label("PatientId", "Pacient")
+            @Html.DropDownList("PatientId", new SelectList(Model.AllPatients, "Value", "Text", ViewBag.UserRole), null, new { @class = "form-control" })
             <br />
 
             @Html.Label("Diagnostic", "Diagnostic")
@@ -28,7 +32,7 @@ routeValues: new { id = Model.Id }))
             @Html.TextArea("Diagnostic", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(c => c.Diagnostic, null, new { @class = "text-danger" })
             <br />
-            
+
             <button class="btn btn-success" type="submit">Adauga</button>
         }
     }

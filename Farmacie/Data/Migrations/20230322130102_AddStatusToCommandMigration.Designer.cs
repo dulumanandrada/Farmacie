@@ -3,6 +3,7 @@ using System;
 using Farmacie.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Farmacie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230322130102_AddStatusToCommandMigration")]
+    partial class AddStatusToCommandMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -96,11 +98,7 @@ namespace Farmacie.Data.Migrations
                     b.Property<string>("Diagnostic")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PatientId")
+                    b.Property<string>("PatientName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -111,8 +109,6 @@ namespace Farmacie.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
 
                     b.HasIndex("UserId");
 
@@ -334,17 +330,9 @@ namespace Farmacie.Data.Migrations
 
             modelBuilder.Entity("Farmacie.Models.Command", b =>
                 {
-                    b.HasOne("Farmacie.Models.Patient", "Patient")
-                        .WithMany("Commands")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Farmacie.Models.ApplicationUser", "User")
                         .WithMany("Commands")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Patient");
 
                     b.Navigation("User");
                 });
@@ -432,11 +420,6 @@ namespace Farmacie.Data.Migrations
             modelBuilder.Entity("Farmacie.Models.Medicament", b =>
                 {
                     b.Navigation("MedicamentCommands");
-                });
-
-            modelBuilder.Entity("Farmacie.Models.Patient", b =>
-                {
-                    b.Navigation("Commands");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,7 +20,7 @@
                     <option selected>Adauga acest medicament la comanda</option>
                     @foreach (var com in ViewBag.UserCommands)
                     {
-                        <option name="CommandId" value="@com.Id">@com.PatientName</option>
+                        <option name="CommandId" value="@com.Id">@com.Name</option>
                     }
                 </select>
             </div>
