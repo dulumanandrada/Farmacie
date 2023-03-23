@@ -1,4 +1,4 @@
-# Gestionarea Farmaciei InfoWorld
+# Gestionarea Farmaciei 
 
 
 ## Cerințe:
