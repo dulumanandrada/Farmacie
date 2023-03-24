@@ -1,5 +1,14 @@
 # Gestionarea Farmaciei 
 
+# Important:
+Exista deja useri creati:
+- email: admin@test.com
+password: Admin1!
+--> rol de Admin
+
+- email: farmacist@test.com
+password: Farmacist1!
+--> rol de Farmacist
 
 ## Cerințe:
 
